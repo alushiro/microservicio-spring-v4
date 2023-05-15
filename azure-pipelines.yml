@@ -29,8 +29,8 @@ steps:
   inputs:
     SonarCloud: 'SonarCloud'
     organization: 'alushiro'
-    projectKey: 'alushiro_springpet-clinic'
-    projectName: 'springpet-clinic'
+    projectKey: 'alushiro_microservicio-spring-v4'
+    projectName: 'microservicio-spring-v4'
   displayName: 'SonarCloud Prepare'
   
 - task: Gradle@3
