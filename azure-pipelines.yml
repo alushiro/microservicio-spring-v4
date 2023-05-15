@@ -11,16 +11,19 @@ pool:
 
 steps:
 - script: |
-- task: Gradle@3
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    tasks: 'clean build jacocoTestReport'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    sonarQubeRunAnalysis: false
-    spotBugsAnalysis: false
-  displayName: Build
+    ./gradlew clean build jacocoTestReport
+  displayName: Build and generate JaCoCo report
+  
+#- task: Gradle@3
+#  inputs:
+#    gradleWrapperFile: 'gradlew'
+#    tasks: 'clean build jacocoTestReport'
+#    publishJUnitResults: true
+#    testResultsFiles: '**/TEST-*.xml'
+#    javaHomeOption: 'JDKVersion'
+#    sonarQubeRunAnalysis: false
+#    spotBugsAnalysis: false
+#  displayName: Build
 
 
 
