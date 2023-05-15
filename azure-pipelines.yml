@@ -18,6 +18,8 @@ steps:
     tasks: 'clean build jacocoTestReport'
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
+    testRunTitle: 'Build and Generate JacocoReport'
+    codeCoverageToolOption: 'JaCoCo'
     javaHomeOption: 'JDKVersion'
     sonarQubeRunAnalysis: false
     spotBugsAnalysis: true
