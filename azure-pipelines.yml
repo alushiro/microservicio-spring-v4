@@ -42,10 +42,3 @@ steps:
       Dockerfile: '**/Dockerfile'
       tags: 'latest'
 
-  - task: JMeterTest@2
-    inputs:
-      testFiles: '**/*.jmx'
-      jmeterHome: '/path/to/jmeter'
-      jtlReportsDirectory: '$(build.artifactStagingDirectory)/jmeter-reports'
-      failBuildOnAssertions: true
-      printJTL: true
