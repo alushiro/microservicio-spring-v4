@@ -22,10 +22,10 @@ steps:
   - task: SonarCloudPrepare@1
     inputs:
       SonarCloud: 'SonarCloudConnection'
-      organization: 'your-organization'
+      organization: 'alushiro'
       scannerMode: 'CLI'
       configMode: 'manual'
-      cliProjectKey: 'your-project-key'
+      cliProjectKey: 'alushiro_microservicio-spring-v4'
       cliSources: 'src'
 
   - task: SonarCloudAnalyze@1
@@ -33,12 +33,3 @@ steps:
   - task: SonarCloudPublish@1
     inputs:
       pollingTimeoutSec: '300'
-
-  - task: Docker@2
-    inputs:
-      containerRegistry: 'your-container-registry'
-      repository: 'your-container-repository'
-      command: 'buildAndPush'
-      Dockerfile: '**/Dockerfile'
-      tags: 'latest'
-
