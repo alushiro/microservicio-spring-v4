@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'com.example'
@@ -19,4 +20,13 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport // Generate JaCoCo report after running tests
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled true // Generate JaCoCo XML report
+		html.enabled true // Generate JaCoCo HTML report
+		html.destination file("${buildDir}/jacocoHtml") // Destination directory for HTML report
+	}
 }
