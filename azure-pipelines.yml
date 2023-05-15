@@ -44,6 +44,22 @@ steps:
     spotBugsAnalysis: false
     
 
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $jacocoReport = Get-Content -Path '**/build/reports/jacoco/test/html/index.html' -Raw
+      $coverageLine = $jacocoReport | Select-String -Pattern 'span class="ctr2">(?<coverage>[0-9]+)%<' | ForEach-Object { $_.Matches.Groups['coverage'].Value }
+      $coverage = [int]$coverageLine
+      if ($coverage -lt 85) {
+        Write-Host "Code coverage is below 85% ($coverage%). Failing the pipeline."
+        exit 1
+      } else {
+        Write-Host "Code coverage is above 85% ($coverage%)."
+      }
+  condition: always()
+  displayName: 'Check code coverage'
+  
 
 - task: Docker@2
   inputs:
