@@ -1,0 +1,12 @@
+
+.idea/
+.gradle/
+*.lock
+
+build/
+
+.gradle/7.1/dependencies-accessors/gc.properties
+
+.gradle/7.1/executionHistory/executionHistory.bin
+
+.gradle/7.1/fileChanges/last-build.bin
