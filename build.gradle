@@ -23,7 +23,7 @@ test {
 	finalizedBy jacocoTestReport // Generate JaCoCo report after running tests
 }
 
-acocoTestReport {
+jacocoTestReport {
 	reports {
 		xml {
 			enabled true // coveralls plugin depends on xml format report
