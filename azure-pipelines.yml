@@ -54,12 +54,12 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'Docker'
-    repository: 'alushiro/microservicio-spring-v4:latest'
+    repository: 'alushiro/microservicio-spring-v4'
     command: 'build'
     Dockerfile: '**/Dockerfile'
 
 - task: Docker@2
   inputs:
     containerRegistry: 'Docker'
-    repository: 'alushiro/microservicio-spring-v4:latest'
+    repository: 'alushiro/microservicio-spring-v4'
     command: 'push'
