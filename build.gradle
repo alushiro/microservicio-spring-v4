@@ -24,14 +24,9 @@ test {
 }
 
 jacocoTestReport {
+	dependsOn test
 	reports {
-		xml.enabled true // reporte XML
-		html.enabled true // reporte HTML
-	}
-
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: 'com/example/**')
-		}))
+		html.enabled true
+		xml.enabled true
 	}
 }
