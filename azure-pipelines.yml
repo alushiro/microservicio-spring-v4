@@ -12,28 +12,16 @@ pool:
 steps:
 
 - script: |
-#- task: Gradle@3
-#  inputs:
-#    gradleWrapperFile: 'gradlew'
-#    tasks: 'build'
-#    publishJUnitResults: true
-#    testResultsFiles: '**/TEST-*.xml'
-#    javaHomeOption: 'JDKVersion'
-#    sonarQubeRunAnalysis: false
-#    spotBugsAnalysis: false
-#  displayName: Build
-
 - task: Gradle@3
   inputs:
     gradleWrapperFile: 'gradlew'
-    tasks: 'build jacocoTestReport'
+    tasks: 'build'
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
-    codeCoverageToolOption: 'JaCoCo'
-    codeCoverageClassFilesDirectories: 'build/classes/main/'
     javaHomeOption: 'JDKVersion'
     sonarQubeRunAnalysis: false
     spotBugsAnalysis: false
+  displayName: Build
 
 - task: SonarCloudPrepare@1
   inputs:
