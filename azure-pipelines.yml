@@ -43,3 +43,4 @@ steps:
     sqGradlePluginVersionChoice: 'specify'
     sonarQubeGradlePluginVersion: '3.5.0.2730'
     spotBugsAnalysis: false
+    
