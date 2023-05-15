@@ -29,7 +29,7 @@ steps:
     targetType: 'inline'
     script: |
       $htmlReportPath = "${buildDir}/jacocoHtml/index.html"
-      $coverageData = Get-Content -Path $htmlReportPath -Raw
+      $coverageData = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/index.html" -Raw
 
       # Realiza el análisis del archivo HTML para obtener los datos de cobertura necesarios
       # Puedes utilizar expresiones regulares o técnicas de manipulación de cadenas para extraer los datos específicos que necesitas
