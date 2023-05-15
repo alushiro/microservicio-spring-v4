@@ -36,8 +36,7 @@ steps:
 #    sonarQubeRunAnalysis: false
 #    spotBugsAnalysis: true
 #    codeCoverageGradle5xOrHigher: 5
-
-  displayName: Build and generate JaCoCo report
+#  displayName: Build and generate JaCoCo report
 
 #- task: PowerShell@2
 #  inputs:
