@@ -20,14 +20,15 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
     sonarQubeRunAnalysis: false
-    spotBugsAnalysis: false
+    spotBugsAnalysis: true
+
   displayName: Build and generate JaCoCo report
 
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: |
-      $jacocoReport = Get-Content -Path '**/build/reports/jacoco/test/html/index.html' -Raw
+      $jacocoReport = Get-Content -Path 'build/reports/jacoco/test/html/index.html' -Raw
       $coverageLine = $jacocoReport | Select-String -Pattern 'span class="ctr2">(?<coverage>[0-9]+)%<' | ForEach-Object { $_.Matches.Groups['coverage'].Value }
       $coverage = [int]$coverageLine
       if ($coverage -lt 85) {
