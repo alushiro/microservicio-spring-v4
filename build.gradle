@@ -23,10 +23,20 @@ test {
 	finalizedBy jacocoTestReport // Generate JaCoCo report after running tests
 }
 
-jacocoTestReport {
-	dependsOn test
+acocoTestReport {
 	reports {
-		html.enabled true
-		xml.enabled true
+		xml {
+			enabled true // coveralls plugin depends on xml format report
+		}
+
+		html {
+			enabled true
+		}
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: 'com/example/**')
+		}))
 	}
 }
