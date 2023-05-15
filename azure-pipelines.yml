@@ -11,15 +11,6 @@ pool:
 
 steps:
 - script: |
-    ./gradlew clean build jacocoTestReport
-    coverage=$(grep -E -o "total.*" build/reports/jacoco/test/jacocoTestReport.csv | awk -F ',' '{print $4}')
-    if [ $(echo "$coverage > 85" | bc -l) -eq 1 ]; then
-      echo "Code coverage is above 85% ($coverage)"
-    else
-      echo "Code coverage is below 85% ($coverage)"
-      exit 1
-    fi
-  displayName: 'Build and validate code coverage'
 - task: Gradle@3
   inputs:
     gradleWrapperFile: 'gradlew'
@@ -31,8 +22,30 @@ steps:
     javaHomeOption: 'JDKVersion'
     sonarQubeRunAnalysis: false
     spotBugsAnalysis: true
-
   displayName: Build and generate JaCoCo report
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $htmlReportPath = "${buildDir}/jacocoHtml/index.html"
+      $coverageData = Get-Content -Path $htmlReportPath -Raw
+
+      # Realiza el análisis del archivo HTML para obtener los datos de cobertura necesarios
+      # Puedes utilizar expresiones regulares o técnicas de manipulación de cadenas para extraer los datos específicos que necesitas
+
+      $pattern = 'class="ctr2">(\d+)%<\/span>'
+      $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
+      $coverage = [int]$coverageLine
+
+      if ($coverage -lt 85) {
+        Write-Host "Code coverage is below 85% ($coverage%). Failing the pipeline."
+        exit 1
+      } else {
+        Write-Host "Code coverage is above 85% ($coverage%)."
+      }
+  displayName: 'Check code coverage'
+
 #- task: Gradle@3
 #  inputs:
 #    gradleWrapperFile: 'gradlew'
