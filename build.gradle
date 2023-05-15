@@ -24,9 +24,9 @@ test {
 }
 
 jacocoTestReport {
+	dependsOn test
 	reports {
-		xml.enabled true // Generate JaCoCo XML report
-		html.enabled true // Generate JaCoCo HTML report
-		html.destination file("${buildDir}/jacocoHtml") // Destination directory for HTML report
+		html.enabled true
+		xml.enabled true
 	}
 }
