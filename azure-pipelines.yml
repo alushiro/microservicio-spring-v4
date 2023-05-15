@@ -10,7 +10,6 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-
 - script: |
 - task: Gradle@3
   inputs:
