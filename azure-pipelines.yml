@@ -12,30 +12,30 @@ pool:
 steps:
 - script: |
 
-#- task: Gradle@3
-#  inputs:
-#    gradleWrapperFile: 'gradlew'
-#    tasks: 'clean build jacocoTestReport'
-#    publishJUnitResults: true
-#    testResultsFiles: '**/TEST-*.xml'
-#    javaHomeOption: 'JDKVersion'
-#    sonarQubeRunAnalysis: false
-#    spotBugsAnalysis: true
-
-#  displayName: Build and generate JaCoCo report
 - task: Gradle@3
   inputs:
     gradleWrapperFile: 'gradlew'
     tasks: 'clean build jacocoTestReport'
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
-    testRunTitle: 'Build and Generate JacocoReport'
-    codeCoverageToolOption: 'JaCoCo'
-    codeCoverageClassFilesDirectories: 'build/classes/main/'
     javaHomeOption: 'JDKVersion'
     sonarQubeRunAnalysis: false
     spotBugsAnalysis: true
- #   codeCoverageGradle5xOrHigher: 5
+
+  displayName: Build and generate JaCoCo report
+#- task: Gradle@3
+#  inputs:
+#    gradleWrapperFile: 'gradlew'
+#    tasks: 'clean build jacocoTestReport'
+#    publishJUnitResults: true
+#    testResultsFiles: '**/TEST-*.xml'
+#    testRunTitle: 'Build and Generate JacocoReport'
+#    codeCoverageToolOption: 'JaCoCo'
+#    codeCoverageClassFilesDirectories: 'build/classes/main/'
+#    javaHomeOption: 'JDKVersion'
+#    sonarQubeRunAnalysis: false
+#    spotBugsAnalysis: true
+#    codeCoverageGradle5xOrHigher: 5
 
   displayName: Build and generate JaCoCo report
 
