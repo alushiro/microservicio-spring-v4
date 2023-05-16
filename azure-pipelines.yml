@@ -5,24 +5,6 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-  - script: |
-      # Configurar permisos en los archivos y directorios necesarios
-      Get-ChildItem -Path "$(System.DefaultWorkingDirectory)/build" -Recurse | ForEach-Object {
-        $item = $_
-        Write-Host "Setting permissions for $($item.FullName)"
-        $acl = Get-Acl -Path $item.FullName
-        $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule("alushiro", "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")))
-        Set-Acl -Path $item.FullName -AclObject $acl
-      }
-      
-      Get-ChildItem -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml" -Filter '*.html' | ForEach-Object {
-        $item = $_
-        Write-Host "Setting permissions for $($item.FullName)"
-        $acl = Get-Acl -Path $item.FullName
-        $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule("alushiro", "FullControl", "None", "None", "Allow")))
-        Set-Acl -Path $item.FullName -AclObject $acl
-      }
-
 
   - task: Gradle@3
     inputs:
