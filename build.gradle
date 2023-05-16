@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'jacoco'
+	id 'org.sonarqube' version '3.3'
 }
 
 jacoco {
@@ -10,6 +11,13 @@ jacoco {
 	reportsDirectory = file("$buildDir/jacocoHtml") // Directorio de destino para el informe HTML
 }
 
+sonarqube {
+	properties {
+		property 'sonar.projectKey', 'alushiro_microservicio-spring-v4'
+		property 'sonar.host.url', 'https://sonarcloud.io' // Cambia esta URL si estás usando un servidor SonarQube local
+		// Otras propiedades de configuración de SonarQube
+	}
+}
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
