@@ -6,7 +6,7 @@ pool:
 
 steps:
 - script: |
-    ./gradlew clean build jacocoTestReport
+    chmod +x gradlew clean build jacocoTestReport
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
     testRunTitle: 'Build and Generate JacocoReport'
