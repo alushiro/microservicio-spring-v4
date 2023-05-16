@@ -11,7 +11,7 @@ steps:
         $item = $_
         Write-Host "Setting permissions for $($item.FullName)"
         $acl = Get-Acl -Path $item.FullName
-        $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule("nombre_usuario", "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")))
+        $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule("alushiro", "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")))
         Set-Acl -Path $item.FullName -AclObject $acl
       }
       
@@ -19,7 +19,7 @@ steps:
         $item = $_
         Write-Host "Setting permissions for $($item.FullName)"
         $acl = Get-Acl -Path $item.FullName
-        $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule("nombre_usuario", "FullControl", "None", "None", "Allow")))
+        $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule("alushiro", "FullControl", "None", "None", "Allow")))
         Set-Acl -Path $item.FullName -AclObject $acl
       }
 
