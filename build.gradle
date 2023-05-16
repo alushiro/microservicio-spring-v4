@@ -15,7 +15,7 @@ sonarqube {
 	properties {
 		property 'sonar.projectKey', 'alushiro_microservicio-spring-v4'
 		property 'sonar.host.url', 'https://sonarcloud.io' // Cambia esta URL si estás usando un servidor SonarQube local
-		// Otras propiedades de configuración de SonarQube
+		property 'sonar.organization', 'alushiro' // Otras propiedades de configuración de SonarQube
 	}
 }
 
