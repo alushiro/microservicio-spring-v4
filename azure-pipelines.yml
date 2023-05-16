@@ -22,7 +22,7 @@ steps:
         $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule("nombre_usuario", "FullControl", "None", "None", "Allow")))
         Set-Acl -Path $item.FullName -AclObject $acl
       }
-  displayName: 'Set Permissions'
+
 
   - task: Gradle@3
     inputs:
