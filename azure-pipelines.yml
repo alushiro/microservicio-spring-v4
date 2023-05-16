@@ -80,9 +80,9 @@ steps:
     organization: 'alushiro'
     projectKey: 'alushiro_microservicio-spring-v4'
     projectName: 'microservicio-spring-v4'
-    extraProperties: |
-      sonar.issue.ignore.multicriteria=BLOCKER;BLOCKER;sonar.issue.ignore.multicriteria.blocker.projectKey=alushiro_microservicio-spring-v4
-      sonar.issue.ignore.multicriteria.blocker.filepattern=**/*
+    #extraProperties: |
+    #  sonar.issue.ignore.multicriteria=BLOCKER;BLOCKER;sonar.issue.ignore.multicriteria.blocker.projectKey=alushiro_microservicio-spring-v4
+    #  sonar.issue.ignore.multicriteria.blocker.filepattern=**/*
   displayName: 'SonarCloud Prepare'
   
 - task: Gradle@3
