@@ -83,6 +83,9 @@ steps:
     #extraProperties: |
     #  sonar.issue.ignore.multicriteria=BLOCKER;BLOCKER;sonar.issue.ignore.multicriteria.blocker.projectKey=alushiro_microservicio-spring-v4
     #  sonar.issue.ignore.multicriteria.blocker.filepattern=**/*
+    extraProperties: |
+      sonar.pullrequest.provider=none
+      sonar.scm.disabled=true
   displayName: 'SonarCloud Prepare'
   
 - task: Gradle@3
