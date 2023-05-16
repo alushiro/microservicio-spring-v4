@@ -22,17 +22,22 @@ steps:
     targetType: 'inline'
     script: |
       $htmlReportPath = "$(System.DefaultWorkingDirectory)/build/reports/jacoco/test/html/index.html"
-      $coverageData = Get-Content -Path $htmlReportPath -Raw
+      if (Test-Path -Path $htmlReportPath) {
+        $coverageData = Get-Content -Path $htmlReportPath -Raw
 
-      $pattern = 'class="ctr2">(\d+)%<\/span>'
-      $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
-      $coverage = [int]$coverageLine
+        $pattern = 'class="ctr2">(\d+)%<\/span>'
+        $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
+        $coverage = [int]$coverageLine
 
-      if ($coverage -lt 85) {
-        Write-Host "Code coverage is below 85% ($coverage%). Failing the pipeline."
-        exit 1
+        if ($coverage -lt 85) {
+          Write-Host "Code coverage is below 85% ($coverage%). Failing the pipeline."
+          exit 1
+        } else {
+          Write-Host "Code coverage is above 85% ($coverage%)."
+        }
       } else {
-        Write-Host "Code coverage is above 85% ($coverage%)."
+        Write-Host "JaCoCo HTML report not found at $htmlReportPath."
+        exit 1
       }
   displayName: 'Check code coverage JaCoCoReport'
 
