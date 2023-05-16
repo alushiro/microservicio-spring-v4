@@ -114,7 +114,11 @@ steps:
     containerRegistry: 'Docker'
     repository: 'alushiro/microservicio-spring-v4'
     command: 'push'
-  
+- script: |   
+    docker run --rm -p 8085:8085 alushiro/microservicio-spring-v4
+    response=$(curl -s http://localhost:8085/greeting)
+    echo "Response from the service: $response" 
+  displayName: 'Call Dockerized Service (Servicio)'
 
 - task: Docker@2
   displayName: 'Build and publish Docker image with Jmeter'
@@ -125,9 +129,5 @@ steps:
     Dockerfile: '**/Dockerfile'
    
 - script: |    
-    docker run --rm -p 8085:8085 alushiro/microservicio-spring-v4
-    response=$(curl -s http://localhost:8085/greeting)
-    echo "Response from the service: $response" 
     docker run --rm -v $(Build.SourcesDirectory):/jmeter alushiro/jmeter
-    
-  displayName: 'Call Dockerized Service'
+  displayName: 'Call Dockerized Service (Jmeter)'
