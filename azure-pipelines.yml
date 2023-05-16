@@ -6,73 +6,33 @@ pool:
 
 steps:
 - script: |
-- task: Gradle@3
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    tasks: 'clean build jacocoTestReport'
+    ./gradlew clean build jacocoTestReport
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
     testRunTitle: 'Build and Generate JacocoReport'
-    #codeCoverageToolOption: 'JaCoCo'
     javaHomeOption: 'JDKVersion'
     sonarQubeRunAnalysis: false
     spotBugsAnalysis: true
-  displayName: Build and generate JaCoCo report
+  displayName: 'Build and generate JaCoCo report'
 
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: |
-      $htmlReportPath = "${buildDir}/jacocoHtml/index.html"
-      $coverageData = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/index.html" -Raw
-      
-
-      # Realiza el análisis del archivo HTML para obtener los datos de cobertura necesarios
-      # Puedes utilizar expresiones regulares o técnicas de manipulación de cadenas para extraer los datos específicos que necesitas
+      $htmlReportPath = "$(System.DefaultWorkingDirectory)/build/reports/jacoco/test/html/index.html"
+      $coverageData = Get-Content -Path $htmlReportPath -Raw
 
       $pattern = 'class="ctr2">(\d+)%<\/span>'
       $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
       $coverage = [int]$coverageLine
 
-
-      if ($coverage -lt 0) {
+      if ($coverage -lt 85) {
         Write-Host "Code coverage is below 85% ($coverage%). Failing the pipeline."
         exit 1
       } else {
         Write-Host "Code coverage is above 85% ($coverage%)."
       }
-  displayName: 'Check code coverage JacocoReport'
-
-#- task: Gradle@3
-#  inputs:
-#    gradleWrapperFile: 'gradlew'
-#    tasks: 'clean build jacocoTestReport'
-#    publishJUnitResults: true
-#    testResultsFiles: '**/TEST-*.xml'
-#    testRunTitle: 'Build and Generate JacocoReport'
-#    codeCoverageToolOption: 'JaCoCo'
-#    codeCoverageClassFilesDirectories: 'build/classes/main/'
-#    javaHomeOption: 'JDKVersion'
-#    sonarQubeRunAnalysis: false
-#    spotBugsAnalysis: true
-#    codeCoverageGradle5xOrHigher: 5
-#  displayName: Build and generate JaCoCo report
-
-#- task: PowerShell@2
-#  inputs:
-#    targetType: 'inline'
-#    script: |
-#      $jacocoReport = Get-Content -Path '$(System.DefaultWorkingDirectory)/build/reports/jacoco/test/html/index.html' -Raw
-#      $coverageLine = $jacocoReport | Select-String -Pattern 'span class="ctr2">(?<coverage>[0-9]+)%<' | ForEach-Object { $_.Matches.Groups['coverage'].Value }
-#      $coverage = [int]$coverageLine
-#      if ($coverage -lt 85) {
-#        Write-Host "Code coverage is below 85% ($coverage%). Failing the pipeline."
-#        exit 1
-#     } else {
-#       Write-Host "Code coverage is above 85% ($coverage%)."
-#      }
-#  condition: always()
-#  displayName: 'Check code coverage'
+  displayName: 'Check code coverage JaCoCoReport'
 
 - task: SonarCloudPrepare@1
   inputs:
@@ -80,9 +40,6 @@ steps:
     organization: 'alushiro'
     projectKey: 'alushiro_microservicio-spring-v4'
     projectName: 'microservicio-spring-v4'
-    #extraProperties: |
-    #  sonar.issue.ignore.multicriteria=BLOCKER;BLOCKER;sonar.issue.ignore.multicriteria.blocker.projectKey=alushiro_microservicio-spring-v4
-    #  sonar.issue.ignore.multicriteria.blocker.filepattern=**/*
     extraProperties: |
       sonar.pullrequest.provider=none
       sonar.scm.disabled=true
@@ -98,10 +55,6 @@ steps:
     sqGradlePluginVersionChoice: 'specify'
     sonarQubeGradlePluginVersion: '3.5.0.2730'
     spotBugsAnalysis: false
-    
-
-
-  
 
 - task: Docker@2
   inputs:
@@ -126,6 +79,7 @@ steps:
     response=$(curl -s http://localhost:8085/greeting)
     echo "Response from the service: $response" 
   displayName: 'Call Dockerized Service (microservicio)'
+
 
 - task: Docker@2
   displayName: 'Build and publish Docker image with Jmeter'
