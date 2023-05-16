@@ -39,10 +39,6 @@ steps:
       $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
       $coverage = [int]$coverageLine
 
-      $jacocoReport = Get-Content -Path '$(System.DefaultWorkingDirectory)/build/reports/jacoco/test/html/index.html' -Raw
-      $coverageLine = $jacocoReport | Select-String -Pattern 'span class="ctr2">(?<coverage>[0-9]+)%<' | ForEach-Object { $_.Matches.Groups['coverage'].Value }
-      $coverage = [int]$coverageLine
-
 
       if ($coverage -lt 0) {
         Write-Host "Code coverage is below 85% ($coverage%). Failing the pipeline."
