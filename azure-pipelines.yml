@@ -131,5 +131,5 @@ steps:
    
 
 - script: |
-    docker run --rm -v $(Build.SourcesDirectory):/jmeter your-docker-repository
+    docker run --rm -v $(Build.SourcesDirectory):/jmeter alushiro/jmeter
   displayName: 'Run JMeter tests in Docker container'
