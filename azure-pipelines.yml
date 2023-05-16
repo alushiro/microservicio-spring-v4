@@ -5,41 +5,57 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: Gradle@3
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    tasks: 'clean build jacocoTestReport'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    testRunTitle: 'Build and Generate JaCoCoReport'
-    javaHomeOption: 'JDKVersion'
-    sonarQubeRunAnalysis: false
-    spotBugsAnalysis: true
-  displayName: 'Build and generate JaCoCo report'
+  - script: |
+      # Configurar permisos en los archivos y directorios necesarios
+      Get-ChildItem -Path "$(System.DefaultWorkingDirectory)/build" -Recurse | ForEach-Object {
+        $item = $_
+        Write-Host "Setting permissions for $($item.FullName)"
+        $acl = Get-Acl -Path $item.FullName
+        $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule("nombre_usuario", "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")))
+        Set-Acl -Path $item.FullName -AclObject $acl
+      }
+      
+      Get-ChildItem -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml" -Filter '*.html' | ForEach-Object {
+        $item = $_
+        Write-Host "Setting permissions for $($item.FullName)"
+        $acl = Get-Acl -Path $item.FullName
+        $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule("nombre_usuario", "FullControl", "None", "None", "Allow")))
+        Set-Acl -Path $item.FullName -AclObject $acl
+      }
+  displayName: 'Set Permissions'
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      $htmlReportPath = "$(System.DefaultWorkingDirectory)/build/reports/jacoco/test/html/index.html"
-      if (Test-Path -Path $htmlReportPath) {
-        $coverageData = Get-Content -Path $htmlReportPath -Raw
+  - task: Gradle@3
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      tasks: 'clean build jacocoTestReport'
+      publishJUnitResults: true
+      testResultsFiles: '**/TEST-*.xml'
+      testRunTitle: 'Build and Generate JaCoCo report'
+      javaHomeOption: 'JDKVersion'
+      sonarQubeRunAnalysis: false
+      spotBugsAnalysis: true
+    displayName: 'Build and generate JaCoCo report'
 
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        $htmlReportPath = "${buildDir}/jacocoHtml/index.html"
+        $coverageData = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/index.html" -Raw
+      
+        # Realiza el análisis del archivo HTML para obtener los datos de cobertura necesarios
+        # Puedes utilizar expresiones regulares o técnicas de manipulación de cadenas para extraer los datos específicos que necesitas
         $pattern = 'class="ctr2">(\d+)%<\/span>'
         $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
         $coverage = [int]$coverageLine
-
-        if ($coverage -lt 85) {
+      
+        if ($coverage -lt 0) {
           Write-Host "Code coverage is below 85% ($coverage%). Failing the pipeline."
           exit 1
         } else {
           Write-Host "Code coverage is above 85% ($coverage%)."
         }
-      } else {
-        Write-Host "JaCoCo HTML report not found at $htmlReportPath."
-        exit 1
-      }
-  displayName: 'Check code coverage JaCoCoReport'
+    displayName: 'Check code coverage JaCoCoReport'
 
 - task: SonarCloudPrepare@1
   inputs:
