@@ -10,7 +10,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class GreetingServiceTest {
+class GreetingServiceTest {
 
     @LocalServerPort
     private int port;
@@ -22,7 +22,7 @@ public class GreetingServiceTest {
     private GreetingService greetingService;
 
     @Test
-    public void greetShouldReturnDefaultMessage() {
+    void greetShouldReturnDefaultMessage() {
         GreetingService greetingService = new GreetingService();
         String greeting = greetingService.greet();
         assertThat(greeting).isEqualTo("Finaliza el curso DevOps Foundation v4 - Eduardo Avello");

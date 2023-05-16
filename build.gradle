@@ -32,7 +32,7 @@ test {
 jacocoTestReport {
 	reports {
 		html.enabled = true // Habilitar informe HTML
-		xml.enabled = false // Deshabilitar informe XML
+		xml.enabled = true // Habilitar informe XML
 		csv.enabled = false // Deshabilitar informe CSV
 	}
 }
