@@ -119,3 +119,17 @@ steps:
     containerRegistry: 'Docker'
     repository: 'alushiro/microservicio-spring-v4'
     command: 'push'
+  
+
+- task: Docker@2
+  displayName: 'Build and publish Docker image with Jmeter'
+  inputs:
+    containerRegistry: 'Docker'  
+    repository: 'alushiro/jmeter'  
+    command: 'buildAndPush'
+    Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+    tags: 'latest'  # Opcional: Define las etiquetas de la imagen del contenedor
+
+- script: |
+    docker run --rm -v $(Build.SourcesDirectory):/jmeter your-docker-repository
+  displayName: 'Run JMeter tests in Docker container'
