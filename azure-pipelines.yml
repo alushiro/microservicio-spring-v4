@@ -63,7 +63,7 @@ steps:
     inputs:
       gradleWrapperFile: 'gradlew'
       tasks: 'sonarqube'
-      publishJUnitResults: false
+      publishJUnitResults: true
       javaHomeOption: 'JDKVersion'
       sonarQubeRunAnalysis: true
       sqGradlePluginVersionChoice: 'specify'
