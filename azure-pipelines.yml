@@ -57,61 +57,61 @@ steps:
         }
     displayName: 'Check code coverage JaCoCoReport'
 
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'SonarCloud'
-    organization: 'alushiro'
-    projectKey: 'alushiro_microservicio-spring-v4'
-    projectName: 'microservicio-spring-v4'
-    extraProperties: |
-      sonar.pullrequest.provider=none
-      sonar.scm.disabled=true
-  displayName: 'SonarCloud Prepare'
-  
-- task: Gradle@3
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    tasks: 'sonarqube'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    sonarQubeRunAnalysis: true
-    sqGradlePluginVersionChoice: 'specify'
-    sonarQubeGradlePluginVersion: '3.5.0.2730'
-    spotBugsAnalysis: false
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'SonarCloud'
+      organization: 'alushiro'
+      projectKey: 'alushiro_microservicio-spring-v4'
+      projectName: 'microservicio-spring-v4'
+      extraProperties: |
+        sonar.pullrequest.provider=none
+        sonar.scm.disabled=true
+    displayName: 'SonarCloud Prepare'
+    
+  - task: Gradle@3
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      tasks: 'sonarqube'
+      publishJUnitResults: false
+      javaHomeOption: 'JDKVersion'
+      sonarQubeRunAnalysis: true
+      sqGradlePluginVersionChoice: 'specify'
+      sonarQubeGradlePluginVersion: '3.5.0.2730'
+      spotBugsAnalysis: false
 
-- task: Docker@2
-  inputs:
-    containerRegistry: 'Docker'
-    command: 'login'
-  
-- task: Docker@2
-  inputs:
-    containerRegistry: 'Docker'
-    repository: 'alushiro/microservicio-spring-v4'
-    command: 'build'
-    Dockerfile: '**/Dockerfile'
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'Docker'
+      command: 'login'
+    
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'Docker'
+      repository: 'alushiro/microservicio-spring-v4'
+      command: 'build'
+      Dockerfile: '**/Dockerfile'
 
-- task: Docker@2
-  inputs:
-    containerRegistry: 'Docker'
-    repository: 'alushiro/microservicio-spring-v4'
-    command: 'push'
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'Docker'
+      repository: 'alushiro/microservicio-spring-v4'
+      command: 'push'
 
-- script: |   
-    docker run --rm -p 8085:8085 alushiro/microservicio-spring-v4
-    response=$(curl -s http://localhost:8085/greeting)
-    echo "Response from the service: $response" 
-  displayName: 'Call Dockerized Service (microservicio)'
+  - script: |   
+      docker run --rm -p 8085:8085 alushiro/microservicio-spring-v4
+      response=$(curl -s http://localhost:8085/greeting)
+      echo "Response from the service: $response" 
+    displayName: 'Call Dockerized Service (microservicio)'
 
 
-- task: Docker@2
-  displayName: 'Build and publish Docker image with Jmeter'
-  inputs:
-    containerRegistry: 'Docker'  
-    repository: 'alushiro/jmeter'  
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-   
-- script: |    
-    docker run --rm -v $(Build.SourcesDirectory):/jmeter alushiro/jmeter
-  displayName: 'Call Dockerized Service (Jmeter)'
+  - task: Docker@2
+    displayName: 'Build and publish Docker image with Jmeter'
+    inputs:
+      containerRegistry: 'Docker'  
+      repository: 'alushiro/jmeter'  
+      command: 'buildAndPush'
+      Dockerfile: '**/Dockerfile'
+    
+  - script: |    
+      docker run --rm -v $(Build.SourcesDirectory):/jmeter alushiro/jmeter
+    displayName: 'Call Dockerized Service (Jmeter)'
