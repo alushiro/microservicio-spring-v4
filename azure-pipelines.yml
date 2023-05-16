@@ -124,6 +124,9 @@ steps:
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
    
-- script: |
+- script: |    
+    docker run --rm -p 8085:8085 alushiro/microservicio-spring-v4
+    response=$(curl -s http://localhost:8085/greeting)
     docker run --rm -v $(Build.SourcesDirectory):/jmeter alushiro/jmeter
-  displayName: 'Run JMeter tests in Docker container'
+    echo "Response from the service: $response"
+  displayName: 'Call Dockerized Service'
