@@ -41,7 +41,7 @@ steps:
       } else {
         Write-Host "Code coverage is above 85% ($coverage%)."
       }
-  displayName: 'Check code coverage'
+  displayName: 'Check code coverage JacocoReport'
 
 #- task: Gradle@3
 #  inputs:
@@ -102,18 +102,27 @@ steps:
     containerRegistry: 'Docker'
     command: 'login'
   
-- task: Docker@2
-  inputs:
-    containerRegistry: 'Docker'
-    repository: 'alushiro/microservicio-spring-v4'
-    command: 'build'
-    Dockerfile: '**/Dockerfile'
+#- task: Docker@2
+#  inputs:
+#    containerRegistry: 'Docker'
+#    repository: 'alushiro/microservicio-spring-v4'
+#    command: 'build'
+#    Dockerfile: '**/Dockerfile'
+
+#- task: Docker@2
+#  inputs:
+#    containerRegistry: 'Docker'
+#    repository: 'alushiro/microservicio-spring-v4'
+#    command: 'push'
 
 - task: Docker@2
+  displayName: 'Build and publish Docker image microservicio-spring-v4'
   inputs:
-    containerRegistry: 'Docker'
-    repository: 'alushiro/microservicio-spring-v4'
-    command: 'push'
+    containerRegistry: 'Docker'  
+    repository: 'alushiro/microservicio-spring-v4'  
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+
 - script: |   
     docker run --rm -p 8085:8085 alushiro/microservicio-spring-v4
     response=$(curl -s http://localhost:8085/greeting)
