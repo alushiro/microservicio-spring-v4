@@ -26,11 +26,9 @@ steps:
         Write-Host "HTML report path: $htmlReportPath"  # Add this line to log the path
         
         $coverageData = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/index.html" -Raw
-         Write-Host "coverageData ES " $coverageData
         # Realiza el análisis del archivo HTML para obtener los datos de cobertura necesarios
         # Puedes utilizar expresiones regulares o técnicas de manipulación de cadenas para extraer los datos específicos que necesitas
         $pattern = 'class="ctr2">(\d+)%<\/td>'
-        Write-Host "PATTERN ES " $pattern
         $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
         $coverage = [int]$coverageLine
       
