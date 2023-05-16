@@ -7,8 +7,10 @@ plugins {
 
 jacoco {
 	toolVersion = "0.8.8"
-	reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+	reportsDirectory = file("$buildDir/jacocoHtml") // Directorio de destino para el informe HTML
 }
+
+
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
@@ -29,9 +31,8 @@ test {
 
 jacocoTestReport {
 	reports {
-		xml.required = false
-		csv.required = false
-		html.destination file("${buildDir}/jacocoHtml") // Ruta de destino para el informe HTML
-
+		html.enabled = true // Habilitar informe HTML
+		xml.enabled = false // Deshabilitar informe XML
+		csv.enabled = false // Deshabilitar informe CSV
 	}
 }
