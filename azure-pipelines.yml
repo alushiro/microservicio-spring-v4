@@ -44,8 +44,8 @@ steps:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: 'JaCoCo'
-      summaryFileLocation: '$(Build.SourcesDirectory)/build/jacocoHtml/jacoco/test/jacocoTestReport.xml'
-      reportDirectory: '$(Build.SourcesDirectory)/build/jacocoHtml/jacoco/test/html'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/'
 
   - task: SonarCloudPrepare@1
     inputs:
@@ -56,7 +56,7 @@ steps:
       extraProperties: |
         sonar.pullrequest.provider=none
         sonar.scm.disabled=true
-        sonar.coverage.jacoco.xmlReportPaths=$(Build.SourcesDirectory)/build/jacocoHtml/jacoco/test/jacocoTestReport.xml
+        sonar.coverage.jacoco.xmlReportPaths=$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
     displayName: 'SonarCloud Prepare'
     
   - task: Gradle@3
