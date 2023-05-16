@@ -127,8 +127,8 @@ steps:
     containerRegistry: 'Docker'  
     repository: 'alushiro/jmeter'  
     command: 'buildAndPush'
-    Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-    tags: 'latest'  # Opcional: Define las etiquetas de la imagen del contenedor
+    Dockerfile: '**/Dockerfile'
+   
 
 - script: |
     docker run --rm -v $(Build.SourcesDirectory):/jmeter your-docker-repository
