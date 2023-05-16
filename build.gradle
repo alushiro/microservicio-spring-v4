@@ -28,7 +28,7 @@ test {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport // Generate JaCoCo report after running tests
 }
-
+jacoco.coverage.verifications=rule { limit { minimum=0.6 } }
 jacocoTestReport {
 	reports {
 		html.enabled = true // Habilitar informe HTML
