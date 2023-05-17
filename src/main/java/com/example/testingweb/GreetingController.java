@@ -18,11 +18,5 @@ public class GreetingController {
 	public @ResponseBody String greeting() {
 		return service.greet();
 	}
-	public void processCriticalData(String data) {
-		if (data == null) {
-			throw new IllegalArgumentException("Los datos críticos no pueden ser nulos");
-		}
 
-		// Resto de la lógica para procesar los datos críticos
-	}
 }
