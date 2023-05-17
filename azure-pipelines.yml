@@ -144,8 +144,10 @@ steps:
 
   - script: |   
       docker run --rm -dp 8085:8085 alushiro/microservicio-spring-v4
-      response=$(curl -s http://localhost:8085/greeting)
-      echo "Response from the service: $response" 
+      echo "Waiting for the container to be deployed..."
+      sleep 30
+      response=$(wget -qO- http://localhost:8085/greeting)
+      echo "Response from the service: $response"
     displayName: 'Call Dockerized Service (microservicio)'
 
 #  - script: |
