@@ -142,20 +142,20 @@ steps:
       repository: 'alushiro/microservicio-spring-v4'
       command: 'push'
 
- # - script: |   
- #     docker run --rm -p 8085:8085 alushiro/microservicio-spring-v4
- #     response=$(curl -s http://localhost:8085/greeting)
- #     echo "Response from the service: $response" 
- #   displayName: 'Call Dockerized Service (microservicio)'
-
-  - script: |
+  - script: |   
       docker run --rm -p 8085:8085 alushiro/microservicio-spring-v4
+      response=$(curl -s http://localhost:8085/greeting)
+      echo "Response from the service: $response" 
+    displayName: 'Call Dockerized Service (microservicio)'
+
+#  - script: |
+#      docker run --rm -p 8085:8085 alushiro/microservicio-spring-v4
 #      echo "Waiting for the service to start..."
 #      timeout /t 30 /nobreak > NUL
 #      echo "Calling the Dockerized service"
 #      response=$(curl -s http://127.0.0.1:8085/greeting)
 #      echo "Response from the service: $response" 
-    displayName: 'Deploy Dockerized Service (microservicio)'
+#    displayName: 'Deploy Dockerized Service (microservicio)'
 
 
 #  - task: Docker@2
