@@ -2,8 +2,8 @@ trigger:
   - 'feature-ms-eduardoAvello-mensaje'
 
 pool:
-  #vmImage: ubuntu-latest
-  name: EduPc
+  vmImage: ubuntu-latest
+  #name: EduPc
 steps:
   - task: Gradle@3
     inputs:
