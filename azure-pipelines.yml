@@ -23,9 +23,9 @@ steps:
       script: |
         $htmlReportPath = "${buildDir}/jacocoHtml/test/html/index.html"
         Write-Host "HTML report path: $htmlReportPath"  # Add this line to log the path
-        $coverageDataXml = Get-Content -Path "${buildDir}/jacocoHtml/test/jacocoTestReport.xml" -Raw
+        $coverageDataXml = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml" -Raw
         Write-Host "XML report : $coverageDataXml"
-        $coverageData = Get-Content -Path "${buildDir}/jacocoHtml/test/html/index.html" -Raw
+        $coverageData = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/index.html" -Raw
         # Realiza el análisis del archivo HTML para obtener los datos de cobertura necesarios
         # Puedes utilizar expresiones regulares o técnicas de manipulación de cadenas para extraer los datos específicos que necesitas
         $pattern = 'class="ctr2">(\d+)%<\/td>'
@@ -43,8 +43,8 @@ steps:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: 'JaCoCo'
-      summaryFileLocation: '${buildDir}/jacocoHtml/test/jacocoTestReport.xml'
-      reportDirectory: '${buildDir}/jacocoHtml/test/html/'
+      summaryFileLocation: '"$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml'
+      reportDirectory: '"$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/'
 
   - task: SonarCloudPrepare@1
     inputs:
@@ -55,7 +55,7 @@ steps:
       extraProperties: |
         sonar.pullrequest.provider=none
         sonar.scm.disabled=true
-        sonar.coverage.jacoco.xmlReportPaths=${buildDir}/jacocoHtml/test/jacocoTestReport.xml
+        sonar.coverage.jacoco.xmlReportPaths="$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
         sonar.coverage.jacoco.minimumProjectThreshol=90  # Cambio del umbral de aceptación a 70%
     displayName: 'SonarCloud Prepare'
   - task: Gradle@3
@@ -96,8 +96,8 @@ steps:
   - task: PublishCodeCoverageResults@1
     inputs:
       codeCoverageTool: 'JaCoCo'
-      summaryFileLocation: '${buildDir}/jacocoHtml/test/jacocoTestReport.xml'
-      reportDirectory: '${buildDir}/jacocoHtml/test/html/'
+      summaryFileLocation: '"$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml'
+      reportDirectory: '"$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/'
 
   - task: SonarCloudPrepare@1
     inputs:
@@ -108,7 +108,7 @@ steps:
       extraProperties: |
         sonar.pullrequest.provider=none
         sonar.scm.disabled=true
-        sonar.coverage.jacoco.xmlReportPaths=${buildDir}/jacocoHtml/test/jacocoTestReport.xml
+        sonar.coverage.jacoco.xmlReportPaths="$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
         sonar.coverage.jacoco.minimumProjectThreshol=90  # Cambio del umbral de aceptación a 70%
 
     displayName: 'SonarCloud Prepare'
