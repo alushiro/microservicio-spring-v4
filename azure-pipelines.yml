@@ -171,8 +171,9 @@ steps:
       targetType: 'inline'
       script: |
         # Ruta al archivo JMX de JMeter
+
         $jmeterFolder = "C:\Users\eduar\Downloads\apache-jmeter-5.5\apache-jmeter-5.5\bin\"
-        $jmeterScriptPath = "$(jmeterFolder)DevopsTest.jmx"
+        $jmeterScriptPath = "${jmeterFolder}DevopsTest.jmx"
 
         # Ruta de salida para los resultados de JMeter
         $jmeterResultsPath = "$(System.DefaultWorkingDirectory)/jmeter_results.jtl"
