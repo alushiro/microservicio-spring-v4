@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab-deployment
+  labels:
+    app: lab-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lab-app
+  template:
+    metadata:
+      labels:
+        app: lab-app
+    spec:
+      containers:
+        - name: lab-app
+          image: alushiro/microservicio-spring-v4:latest
+          ports:
+            - containerPort: 8085
