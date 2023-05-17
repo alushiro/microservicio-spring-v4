@@ -1,6 +1,5 @@
 trigger:
   - 'feature-ms-eduardoAvello-mensaje'
-
 pool:
   #vmImage: ubuntu-latest
   name: EduPc
