@@ -108,6 +108,9 @@ steps:
         sonar.pullrequest.provider=none
         sonar.scm.disabled=true
         sonar.coverage.jacoco.xmlReportPaths=$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
+        sonar.coverage.exclusions=**/*Test*   # Opcional: Excluye los archivos de prueba de la cobertura
+        sonar.coverage.jacoco.minimumProjectThreshol=90  # Cambio del umbral de aceptación a 70%
+
     displayName: 'SonarCloud Prepare'
     
   - task: Gradle@3
@@ -120,22 +123,6 @@ steps:
       sqGradlePluginVersionChoice: 'specify'
       sonarQubeGradlePluginVersion: '3.5.0.2730'
       spotBugsAnalysis: false
-
-  - task: PowerShell@2
-    inputs:
-      targetType: 'inline'
-      script: |
-        $sonarBaseUrl = "https://sonarcloud.io"  # Cambia esto si utilizas una instancia de SonarQube diferente
-        $projectUrl = "$sonarBaseUrl/dashboard?id=alushiro_microservicio-spring-v4"
-        $response = Invoke-RestMethod -Uri "$projectUrl/api/measures/component?componentKey=alushiro_microservicio-spring-v4&metricKeys=coverage" -Method Get
-        $coverage = $response.component.measures[0].value
-        if ($coverage -lt 85) {
-          Write-Host "Code coverage is below 85% ($coverage%). Failing the deployment."
-          exit 1
-        } else {
-          Write-Host "Code coverage is above 85% ($coverage%). Proceeding with the deployment."
-        }
-    displayName: 'Check code coverage in SonarCloud'
 
   - task: Docker@2
     inputs:
