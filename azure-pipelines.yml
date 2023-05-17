@@ -132,6 +132,9 @@ steps:
       repository: 'alushiro/microservicio-spring-v4'
       command: 'build'
       Dockerfile: '**/Dockerfile'
+      tags: |
+        $(Build.BuildId)
+        latest
 
   - task: Docker@2
     inputs:
