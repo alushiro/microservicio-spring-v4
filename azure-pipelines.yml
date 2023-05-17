@@ -129,22 +129,33 @@ steps:
       containerRegistry: 'Docker'
       command: 'login'
     
+#  - task: Docker@2
+#    inputs:
+#      containerRegistry: 'Docker'
+#      repository: 'alushiro/microservicio-spring-v4'
+#      command: 'build'
+#      Dockerfile: '**/Dockerfile'
+#      tags: |
+#        $(Build.BuildId)
+#        latest
+
+#  - task: Docker@2
+#    inputs:
+#      containerRegistry: 'Docker'
+#      repository: 'alushiro/microservicio-spring-v4'
+#      command: 'push'
+#      tags: |
+#        $(Build.BuildId)
+#        latest
   - task: Docker@2
     inputs:
       containerRegistry: 'Docker'
       repository: 'alushiro/microservicio-spring-v4'
-      command: 'build'
-      Dockerfile: '**/Dockerfile'
+      command: 'buildAndPush'
       tags: |
-        $(Build.BuildId)
-        latest
-
-  - task: Docker@2
-    inputs:
-      containerRegistry: 'Docker'
-      repository: 'alushiro/microservicio-spring-v4'
-      command: 'push'
-
+            v$(Build.BuildId)
+            latest
+      Dockerfile: '**/Dockerfile'
 #  - script: |   
 #      docker run --rm -dp 8085:8085 alushiro/microservicio-spring-v4
 #      echo "Waiting for the container to be deployed..."
