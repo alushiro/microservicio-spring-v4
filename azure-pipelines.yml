@@ -3,6 +3,8 @@ trigger:
 pool:
   #vmImage: ubuntu-latest
   name: EduPc
+variables:
+  min_coverage: 85
 steps:
   - task: Gradle@3
     inputs:
@@ -30,12 +32,12 @@ steps:
         $pattern = 'class="ctr2">(\d+)%<\/td>'
         $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
         $coverage = [int]$coverageLine
-      
-        if ($coverage -lt 0) {
-          Write-Host "Code coverage is below 85% ($coverage%). Failing the pipeline."
+        $minCoverageThreshold = "$(min_coverage)"
+        if ($coverage -lt $minCoverageThreshold) {
+          Write-Host "Code coverage is below $minCoverageThreshold% ($coverage%). Failing the pipeline."
           exit 1
         } else {
-          Write-Host "Code coverage is above 85% ($coverage%)."
+          Write-Host "Code coverage is above $minCoverageThreshold% ($coverage%)."
         }
     displayName: 'Check code coverage JaCoCoReport'
 
@@ -55,8 +57,7 @@ steps:
         sonar.pullrequest.provider=none
         sonar.scm.disabled=true
         sonar.coverage.jacoco.xmlReportPaths=$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
-        sonar.coverage.jacoco.minimumProjectThreshol=90  # Cambio del umbral de aceptación a 70%
-    displayName: 'SonarCloud Prepare'
+        sonar.coverage.jacoco.minimumProjectThreshol="$(min_coverage)"  
 #  - task: Gradle@3
 #    inputs:
 #      gradleWrapperFile: 'gradlew'
@@ -108,7 +109,7 @@ steps:
         sonar.pullrequest.provider=none
         sonar.scm.disabled=true
         sonar.coverage.jacoco.xmlReportPaths=$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
-        sonar.coverage.jacoco.minimumProjectThreshol=90  # Cambio del umbral de aceptación a 70%
+        sonar.coverage.jacoco.minimumProjectThreshol="$(min_coverage)"  
 
     displayName: 'SonarCloud Prepare'
     
