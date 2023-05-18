@@ -51,8 +51,8 @@ steps:
       spotBugsAnalysis: false
     displayName: 'Run SonarCloud Analysis'
 
-  - task: SonarCloudAnalyze@1
-    displayName: 'Run SonarCloud Analysis'
+#  - task: SonarCloudAnalyze@1
+#    displayName: 'Run SonarCloud Analysis'
 
 #  - task: Gradle@3
 #    inputs:
