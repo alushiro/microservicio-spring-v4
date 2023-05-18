@@ -155,22 +155,13 @@ steps:
             v$(Build.BuildId)
             latest
       Dockerfile: '**/Dockerfile'
-#  - script: |   
-#      docker run --rm -dp 8085:8085 alushiro/microservicio-spring-v4
-#      echo "Waiting for the container to be deployed..."
-#      wget http://localhost:8085/greeting
-#      
-#    displayName: 'Call Dockerized Service (microservicio)'
-
-#  - script: |
-#      docker run --rm -p 8085:8085 alushiro/microservicio-spring-v4
-#      echo "Waiting for the service to start..."
-#      timeout /t 30 /nobreak > NUL
-#      echo "Calling the Dockerized service"
-#      response=$(curl -s http://127.0.0.1:8085/greeting)
-#      echo "Response from the service: $response" 
-#    displayName: 'Deploy Dockerized Service (microservicio)'
-
+  - script: |   
+      docker run --rm -dp 8080:8080 alushiro/microservicio-spring-v4:latest
+    displayName: 'Deploy Dockerized Service (microservicio)'
+  - task: CmdLine@2
+    inputs:
+      script: 'jmeter -n -t $(System.DefaultWorkingDirectory)/jmeter/test-plan.jmx'
+    displayName: 'Run JMeter'
 
 #  - task: Docker@2
 #    displayName: 'Build and publish Docker image with Jmeter'
