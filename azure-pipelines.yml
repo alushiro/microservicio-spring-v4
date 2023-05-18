@@ -1,8 +1,8 @@
 trigger:
   - 'feature-ms-eduardoAvello-mensaje'
 pool:
-  #vmImage: ubuntu-latest
-  name: EduPc
+  vmImage: ubuntu-latest
+  #name: EduPc
 variables:
   min_coverage: 80
 steps:
