@@ -72,36 +72,36 @@ steps:
 #        }
 #    displayName: 'Check code coverage JaCoCoReport'
 
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: 'JaCoCo'
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/'
+ # - task: PublishCodeCoverageResults@1
+ #   inputs:
+ #     codeCoverageTool: 'JaCoCo'
+ #     summaryFileLocation: '$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml'
+ #     reportDirectory: '$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/'
 
-  - task: SonarCloudPrepare@1
-    inputs:
-      SonarCloud: 'SonarCloud'
-      organization: 'alushiro'
-      projectKey: 'alushiro_microservicio-spring-v4'
-      projectName: 'microservicio-spring-v4'
-      extraProperties: |
-        sonar.pullrequest.provider=none
-        sonar.scm.disabled=true
-        sonar.coverage.jacoco.xmlReportPaths=$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
-        sonar.coverage.jacoco.minimumProjectThreshol="$(min_coverage)"  
+ # - task: SonarCloudPrepare@1
+ #   inputs:
+ #     SonarCloud: 'SonarCloud'
+ #     organization: 'alushiro'
+ #     projectKey: 'alushiro_microservicio-spring-v4'
+ #     projectName: 'microservicio-spring-v4'
+ #     extraProperties: |
+ #       sonar.pullrequest.provider=none
+ #       sonar.scm.disabled=true
+ #       sonar.coverage.jacoco.xmlReportPaths=$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
+ #       sonar.coverage.jacoco.minimumProjectThreshol="$(min_coverage)"  
 
-    displayName: 'SonarCloud Prepare'
+#    displayName: 'SonarCloud Prepare'
     
-  - task: Gradle@3
-    inputs:
-      gradleWrapperFile: 'gradlew'
-      tasks: 'sonarqube'
-      publishJUnitResults: true
-      javaHomeOption: 'JDKVersion'
-      sonarQubeRunAnalysis: true
-      sqGradlePluginVersionChoice: 'specify'
-      sonarQubeGradlePluginVersion: '3.5.0.2730'
-      spotBugsAnalysis: false
+#  - task: Gradle@3
+#    inputs:
+#      gradleWrapperFile: 'gradlew'
+#      tasks: 'sonarqube'
+#      publishJUnitResults: true
+#      javaHomeOption: 'JDKVersion'
+#      sonarQubeRunAnalysis: true
+#      sqGradlePluginVersionChoice: 'specify'
+#      sonarQubeGradlePluginVersion: '3.5.0.2730'
+#      spotBugsAnalysis: false
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
