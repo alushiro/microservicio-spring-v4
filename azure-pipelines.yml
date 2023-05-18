@@ -152,7 +152,7 @@ steps:
       repository: 'alushiro/microservicio-spring-v4'
       command: 'buildAndPush'
       tags: |
-            v$(Build.BuildId)
+            $(Build.BuildId)
             latest
       Dockerfile: '**/Dockerfile'
   - script: |   
