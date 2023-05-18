@@ -40,16 +40,16 @@ steps:
         sonar.qualitygate.conditions=blocker
     displayName: Preparar Sonar Cloud
 
-#  - task: Gradle@3
-#    inputs:
-#      gradleWrapperFile: 'gradlew'
-#      tasks: 'sonarqube'
-#      publishJUnitResults: true
-#      javaHomeOption: 'JDKVersion'
-#      sqGradlePluginVersionChoice: 'specify'
-#      sonarQubeGradlePluginVersion: '3.5.0.2730'
-#      spotBugsAnalysis: false
-#    displayName: 'Run SonarCloud Analysis'
+  - task: Gradle@3
+    inputs:
+      gradleWrapperFile: 'gradlew'
+      tasks: 'sonarqube'
+      publishJUnitResults: true
+      javaHomeOption: 'JDKVersion'
+      sqGradlePluginVersionChoice: 'specify'
+      sonarQubeGradlePluginVersion: '3.5.0.2730'
+      spotBugsAnalysis: false
+    displayName: 'Run SonarCloud Analysis'
 
   - task: SonarCloudAnalyze@1
     displayName: 'Run SonarCloud Analysis'
