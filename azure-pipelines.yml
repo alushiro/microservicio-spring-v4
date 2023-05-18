@@ -156,49 +156,13 @@ steps:
             latest
       Dockerfile: '**/Dockerfile'
   - script: |   
-      docker run --rm -dp 8080:8080 alushiro/microservicio-spring-v4:latest
+      docker run --rm -dp 8080:8080 --name devops-microservicio-v4 alushiro/microservicio-spring-v4:latest
     displayName: 'Deploy Dockerized Service (microservicio)'
   - task: CmdLine@2
     inputs:
       script: 'jmeter -n -t $(System.DefaultWorkingDirectory)/jmeter/test-plan.jmx -l $(System.DefaultWorkingDirectory)/resultados.jtl' 
     displayName: 'Run JMeter'
 
-#  - task: Docker@2
-#    displayName: 'Build and publish Docker image with Jmeter'
-#    inputs:
-#      containerRegistry: 'Docker'  
-#      repository: 'alushiro/jmeter'  
-#      command: 'buildAndPush'
-#      Dockerfile: '**/Dockerfile'
-    
-#  - script: |    
-#      docker run --rm -v $(Build.SourcesDirectory):/jmeter alushiro/jmeter
-#    displayName: 'Call Dockerized Service (Jmeter)'
-#  - task: PowerShell@2
-#    inputs:
-#      targetType: 'inline'
-#      script: |
-#        # Ruta al archivo JMX de JMeter
-
-#        $jmeterFolder = "C:\Users\eduar\Downloads\apache-jmeter-5.5\apache-jmeter-5.5\bin\"
-#        $jmeterScriptPath = "${jmeterFolder}DevopsTest.jmx"
-
-        # Ruta de salida para los resultados de JMeter
-#        $jmeterResultsPath = "$(System.DefaultWorkingDirectory)/jmeter_results.jtl"
-
-        # Comando para ejecutar JMeter
-#        $jmeterCommand = "jmeter -n -t `"$jmeterScriptPath`" -l `"$jmeterResultsPath`""
-
-        # Ejecutar el comando de JMeter
-#        Write-Host "Running JMeter..."
-#        Invoke-Expression $jmeterCommand
-
-        # Verificar los resultados de JMeter
-#        if (!(Test-Path $jmeterResultsPath)) {
-#          Write-Host "JMeter execution failed. No results file found."
-#          exit 1
-#        }
-
-        # Imprimir la ruta del archivo de resultados
-#        Write-Host "JMeter results file path: $jmeterResultsPath"
-#    displayName: 'Run JMeter'
+  - script: |
+      docker stop devops-microservicio-v4
+    displayName: 'Stop Dockerized Service (microservicio)'
