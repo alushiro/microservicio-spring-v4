@@ -14,7 +14,7 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
       testRunTitle: 'Build and Generate JaCoCo report'
       javaHomeOption: 'JDKVersion'
-      sonarQubeRunAnalysis: false
+      sonarQubeRunAnalysis: true
       spotBugsAnalysis: true
     displayName: 'Build and generate JaCoCo report'
 
