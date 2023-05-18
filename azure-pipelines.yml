@@ -127,7 +127,7 @@ steps:
         if ($coverage -lt $minCoverageThreshold) {
           Write-Host "Code coverage is below $minCoverageThreshold% ($coverage%). Failing the pipeline."
           exit 1
-       } else {
+        } else {
           Write-Host "Code coverage is above $minCoverageThreshold% ($coverage%)."
         }
      displayName: 'Check code coverage JaCoCoReport'
