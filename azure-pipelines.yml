@@ -43,7 +43,7 @@ steps:
   - task: Gradle@3
     inputs:
       gradleWrapperFile: 'gradlew'
-      tasks: 'build sonarqube'
+      tasks: 'sonarqube'
       publishJUnitResults: true
       javaHomeOption: 'JDKVersion'
       sqGradlePluginVersionChoice: 'specify'
