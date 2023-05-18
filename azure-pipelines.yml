@@ -130,7 +130,7 @@ steps:
         } else {
           Write-Host "Code coverage is above $minCoverageThreshold% ($coverage%)."
         }
-     displayName: 'Check code coverage JaCoCoReport'
+    displayName: 'Check code coverage JaCoCoReport'
   - task: Docker@2
     inputs:
       containerRegistry: 'Docker'
