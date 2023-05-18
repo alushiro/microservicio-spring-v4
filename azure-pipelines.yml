@@ -138,8 +138,9 @@ steps:
             $(Build.BuildId)
             latest
       Dockerfile: '**/Dockerfile'
-  - script: |   
-      docker run --rm -dp 8080:8080 --name devops-microservicio-v4 alushiro/microservicio-spring-v4:latest
+  - script: |
+      docker network create red-devops   
+      docker run --rm -dp 8080:8080 --name devops-microservicio-v4 --network red-devops alushiro/microservicio-spring-v4:latest
     displayName: 'Deploy Dockerized Service (microservicio)'
   #- task: CmdLine@2
   #  inputs:
@@ -148,7 +149,7 @@ steps:
   #  displayName: 'Run JMeter'
 
   - script: |   
-      docker run --rm --name devops-jmeter alushiro/jmeter_docker:latest
+      docker run --rm --name devops-jmeter --network red-devops alushiro/jmeter_docker:latest
     displayName: 'Deploy Dockerized Jmeter (microservicio)'
 
   - script: |
