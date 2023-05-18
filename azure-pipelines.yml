@@ -148,7 +148,7 @@ steps:
   #  displayName: 'Run JMeter'
 
   - script: |   
-      docker run --rm --name devops-jmeter alushiro/jmeter_docker
+      docker run --rm --name devops-jmeter alushiro/jmeter_docker:latest
     displayName: 'Deploy Dockerized Jmeter (microservicio)'
 
   - script: |
