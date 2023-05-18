@@ -143,7 +143,7 @@ steps:
   - task: CmdLine@2
     inputs:
       script: |
-       sleep 5 ; 'jmeter -n -t $(System.DefaultWorkingDirectory)/jmeter/test-plan.jmx -l $(System.DefaultWorkingDirectory)/jmeter/resultados.jtl' 
+       sleep 5 ; jmeter -n -t $(System.DefaultWorkingDirectory)/jmeter/test-plan.jmx -l $(System.DefaultWorkingDirectory)/resultados.jtl
     displayName: 'Run JMeter'
 
   - script: |
