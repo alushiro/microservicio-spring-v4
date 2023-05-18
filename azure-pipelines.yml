@@ -18,28 +18,7 @@ steps:
       spotBugsAnalysis: true
     displayName: 'Build and generate JaCoCo report'
 
-  - task: PowerShell@2
-    inputs:
-      targetType: 'inline'
-      script: |
-        $htmlReportPath = "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/index.html"
-        Write-Host "HTML report path: $htmlReportPath"  # Add this line to log the path
-        $coverageDataXml = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml" -Raw
-        Write-Host "XML report : $coverageDataXml"
-        $coverageData = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/index.html" -Raw
-        # Realiza el análisis del archivo HTML para obtener los datos de cobertura necesarios
-        # Puedes utilizar expresiones regulares o técnicas de manipulación de cadenas para extraer los datos específicos que necesitas
-        $pattern = 'class="ctr2">(\d+)%<\/td>'
-        $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
-        $coverage = [int]$coverageLine
-        $minCoverageThreshold = "$(min_coverage)"
-        if ($coverage -lt $minCoverageThreshold) {
-          Write-Host "Code coverage is below $minCoverageThreshold% ($coverage%). Failing the pipeline."
-          exit 1
-        } else {
-          Write-Host "Code coverage is above $minCoverageThreshold% ($coverage%)."
-        }
-    displayName: 'Check code coverage JaCoCoReport'
+
 
   - task: PublishCodeCoverageResults@1
     inputs:
@@ -123,7 +102,28 @@ steps:
       sqGradlePluginVersionChoice: 'specify'
       sonarQubeGradlePluginVersion: '3.5.0.2730'
       spotBugsAnalysis: false
-
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        $htmlReportPath = "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/index.html"
+        Write-Host "HTML report path: $htmlReportPath"  # Add this line to log the path
+        $coverageDataXml = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml" -Raw
+        Write-Host "XML report : $coverageDataXml"
+        $coverageData = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/index.html" -Raw
+        # Realiza el análisis del archivo HTML para obtener los datos de cobertura necesarios
+        # Puedes utilizar expresiones regulares o técnicas de manipulación de cadenas para extraer los datos específicos que necesitas
+        $pattern = 'class="ctr2">(\d+)%<\/td>'
+        $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
+        $coverage = [int]$coverageLine
+        $minCoverageThreshold = "$(min_coverage)"
+        if ($coverage -lt $minCoverageThreshold) {
+          Write-Host "Code coverage is below $minCoverageThreshold% ($coverage%). Failing the pipeline."
+          exit 1
+        } else {
+          Write-Host "Code coverage is above $minCoverageThreshold% ($coverage%)."
+        }
+    displayName: 'Check code coverage JaCoCoReport'
   - task: Docker@2
     inputs:
       containerRegistry: 'Docker'
