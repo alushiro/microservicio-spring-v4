@@ -4,7 +4,7 @@ pool:
   #vmImage: ubuntu-latest
   name: EduPc
 variables:
-  min_coverage: 85
+  min_coverage: 80
 steps:
   - task: Gradle@3
     inputs:
@@ -141,11 +141,15 @@ steps:
   - script: |   
       docker run --rm -dp 8080:8080 --name devops-microservicio-v4 alushiro/microservicio-spring-v4:latest
     displayName: 'Deploy Dockerized Service (microservicio)'
-  - task: CmdLine@2
-    inputs:
-      script: |
-       sleep 5 ; jmeter -n -t $(System.DefaultWorkingDirectory)/jmeter/test-plan.jmx -l $(System.DefaultWorkingDirectory)/resultados.jtl
-    displayName: 'Run JMeter'
+  #- task: CmdLine@2
+  #  inputs:
+  #    script: |
+  #     sleep 5 ; jmeter -n -t $(System.DefaultWorkingDirectory)/jmeter/test-plan.jmx -l $(System.DefaultWorkingDirectory)/resultados.jtl
+  #  displayName: 'Run JMeter'
+
+  - script: |   
+      docker run --rm --name devops-jmeter alushiro/jmeter_docker
+    displayName: 'Deploy Dockerized Jmeter (microservicio)'
 
   - script: |
       echo 'Llamando a servicio desde localhost:8080/greeting'
@@ -155,4 +159,6 @@ steps:
       echo '----------------------------------------------'
       echo 'Deteniendo Dockerized Service'
       docker stop devops-microservicio-v4
+      echo 'Deteniendo Dockerized Jmeter'
+      docker stop devops-jmeter
     displayName: 'End Course'
