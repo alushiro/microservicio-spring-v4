@@ -153,6 +153,5 @@ steps:
       echo "$respuesta"
       echo '----------------------------------------------'
       echo 'Deteniendo Dockerized Service'
-      echo 'devops-microservicio-v4'
       docker stop devops-microservicio-v4
     displayName: 'End Course'
