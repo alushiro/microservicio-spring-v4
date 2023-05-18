@@ -104,7 +104,7 @@ steps:
  #       sonar.coverage.jacoco.minimumProjectThreshol="$(min_coverage)"  
 
 #    displayName: 'SonarCloud Prepare'
-      - task: PowerShell@2
+  - task: PowerShell@2
     inputs:
       targetType: 'inline'
       script: |
