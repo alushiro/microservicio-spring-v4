@@ -147,5 +147,6 @@ steps:
     displayName: 'Run JMeter'
 
   - script: |
+      wget -qO- localhost:8080/greeting
       docker stop devops-microservicio-v4
-    displayName: 'Stop Dockerized Service (microservicio)'
+    displayName: 'End Course'
