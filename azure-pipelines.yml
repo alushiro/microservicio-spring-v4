@@ -148,7 +148,11 @@ steps:
 
   - script: |
       echo 'Llamando a servicio desde localhost:8080/greeting'
-      wget -qO- localhost:8080/greeting
+      echo '----------------------------------------------'
+      respuesta=$(wget -qO- localhost:8080/greeting)
+      echo "$respuesta"
+      echo '----------------------------------------------'
       echo 'Deteniendo Dockerized Service'
+      echo 'devops-microservicio-v4'
       docker stop devops-microservicio-v4
     displayName: 'End Course'
