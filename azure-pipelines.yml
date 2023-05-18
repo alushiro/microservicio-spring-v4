@@ -160,7 +160,7 @@ steps:
     displayName: 'Deploy Dockerized Service (microservicio)'
   - task: CmdLine@2
     inputs:
-      script: 'jmeter -n -t $(System.DefaultWorkingDirectory)/jmeter/test-plan.jmx'
+      script: 'jmeter -n -t $(System.DefaultWorkingDirectory)/jmeter/test-plan.jmx -l $(System.DefaultWorkingDirectory)/resultados.jtl' 
     displayName: 'Run JMeter'
 
 #  - task: Docker@2
