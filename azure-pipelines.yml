@@ -31,13 +31,13 @@ steps:
       organization: 'alushiro'
       projectKey: 'alushiro_microservicio-spring-v4'
       projectName: 'microservicio-spring-v4'
-#      extraProperties: |
-#        sonar.pullrequest.provider=none
-#        sonar.scm.disabled=true
-#        sonar.coverage.jacoco.xmlReportPaths=$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
-#        sonar.coverage.jacoco.minimumProjectThreshol="$(min_coverage)"  
-#        sonar.qualitygate.wait=true
-#        sonar.qualitygate.conditions=blocker
+      extraProperties: |
+        sonar.pullrequest.provider=none
+        sonar.scm.disabled=true
+        sonar.coverage.jacoco.xmlReportPaths=$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
+        sonar.coverage.jacoco.minimumProjectThreshol="$(min_coverage)"  
+        sonar.qualitygate.wait=true
+        sonar.qualitygate.conditions=blocker
     displayName: Preparar Sonar Cloud
 
   - task: Gradle@3
