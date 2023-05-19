@@ -183,4 +183,4 @@ jobs:
     inputs:
       connectionType: 'None'
       command: 'apply'
-      arguments: '-f kubernetes/deployment-app.yaml'
+      arguments: '-f deployment-app.yaml'
