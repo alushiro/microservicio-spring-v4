@@ -198,12 +198,12 @@ jobs:
             jmeter -n -t jmeter/test-plan.jmx -l resultados.jtl
     displayName: 'Run JMeter'
   
-  - task: PowerShell@2
-    inputs:
-      targetType: 'inline'
-      script: |
-        $process = Get-Process -Name "kubectl" -ErrorAction SilentlyContinue
-        if ($process) {
-          Stop-Process -Id $process.Id -Force
-        }
-    displayName: 'Stop kubectl port-forward'
+#  - task: PowerShell@2
+#    inputs:
+#      targetType: 'inline'
+#      script: |
+#        $process = Get-Process -Name "kubectl" -ErrorAction SilentlyContinue
+#        if ($process) {
+#          Stop-Process -Id $process.Id -Force
+#        }
+#    displayName: 'Stop kubectl port-forward'
