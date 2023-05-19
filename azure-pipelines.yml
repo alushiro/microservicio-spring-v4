@@ -183,7 +183,7 @@ jobs:
     inputs:
       connectionType: 'None'
       command: 'apply'
-      arguments: '-f deployment-app.yaml'
+      arguments: '--force -f deployment-app.yaml'
     
   - task: CmdLine@2
     inputs:
