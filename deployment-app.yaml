@@ -19,3 +19,15 @@ spec:
           image: alushiro/microservicio-spring-v4:latest
           ports:
             - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lab-service
+spec:
+  selector:
+    app: lab-app
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
