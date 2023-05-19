@@ -173,6 +173,7 @@ jobs:
         docker stop devops-microservicio-v4
       displayName: 'End Course'
 - job: Job2
+  dependsOn: Job1
   displayName: 'Job Local'
   pool:
     #vmImage: ubuntu-latest
