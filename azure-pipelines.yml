@@ -1,0 +1,210 @@
+trigger:
+  - 'feature-ms-eduardoAvello-mensaje'
+jobs:
+- job: Job1
+  displayName: 'Job Cloud'
+  pool:
+    vmImage: ubuntu-latest
+    #name: EduPc
+  variables:
+    min_coverage: 80
+  steps:
+    - task: Gradle@3
+      inputs:
+        gradleWrapperFile: 'gradlew'
+        tasks: 'build jacocoTestReport'
+        publishJUnitResults: true
+        testResultsFiles: '**/TEST-*.xml'
+        testRunTitle: 'Build and Generate JaCoCo report'
+        javaHomeOption: 'JDKVersion'
+        sonarQubeRunAnalysis: false
+        spotBugsAnalysis: true
+      displayName: 'Build and generate JaCoCo report'
+
+
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: 'JaCoCo'
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml'
+        reportDirectory: '$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/'
+
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'alushiro'
+        projectKey: 'alushiro_microservicio-spring-v4'
+        projectName: 'microservicio-spring-v4'
+        extraProperties: |
+          sonar.pullrequest.provider=none
+          sonar.scm.disabled=true
+          sonar.coverage.jacoco.xmlReportPaths=$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
+          sonar.coverage.jacoco.minimumProjectThreshol="$(min_coverage)"  
+          sonar.qualitygate.wait=true
+          sonar.qualitygate.conditions=blocker
+          sonar.issue.squid:MaximumInheritanceDepth.severity=BLOCKER
+      displayName: Preparar Sonar Cloud
+
+    - task: Gradle@3
+      inputs:
+        gradleWrapperFile: 'gradlew'
+        tasks: 'sonarqube'
+        publishJUnitResults: false
+        javaHomeOption: 'JDKVersion'
+        sqGradlePluginVersionChoice: 'specify'
+        sonarQubeGradlePluginVersion: '3.5.0.2730'
+        spotBugsAnalysis: false
+      displayName: 'Run SonarCloud Analysis'
+
+  #  - task: SonarCloudAnalyze@1
+  #    displayName: 'Run SonarCloud Analysis'
+
+  #  - task: Gradle@3
+  #    inputs:
+  #      gradleWrapperFile: 'gradlew'
+  #      tasks: 'clean build jacocoTestReport'
+  #      publishJUnitResults: true
+  #      testResultsFiles: '**/TEST-*.xml'
+  #      testRunTitle: 'Build and Generate JaCoCo report'
+  #      javaHomeOption: 'JDKVersion'
+  #      sonarQubeRunAnalysis: false
+  #      spotBugsAnalysis: true
+  #    displayName: 'Build and generate JaCoCo report'
+
+  #  - task: PowerShell@2
+  #    inputs:
+  #      targetType: 'inline'
+  #      script: |
+  #        $htmlReportPath = "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/index.html"
+  #        Write-Host "HTML report path: $htmlReportPath"  # Add this line to log the path
+  #        $coverageDataXml = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml" -Raw
+  #        Write-Host "XML report : $coverageDataXml"
+  #        $coverageData = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/index.html" -Raw
+  #        # Realiza el análisis del archivo HTML para obtener los datos de cobertura necesarios
+  #        # Puedes utilizar expresiones regulares o técnicas de manipulación de cadenas para extraer los datos específicos que necesitas
+  #        $pattern = 'class="ctr2">(\d+)%<\/td>'
+  #        $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
+  #        $coverage = [int]$coverageLine
+  #      
+  #        if ($coverage -lt 0) {
+  #          Write-Host "Code coverage is below 85% ($coverage%). Failing the pipeline."
+  #          exit 1
+  #        } else {
+  #          Write-Host "Code coverage is above 85% ($coverage%)."
+  #        }
+  #    displayName: 'Check code coverage JaCoCoReport'
+
+  # - task: PublishCodeCoverageResults@1
+  #   inputs:
+  #     codeCoverageTool: 'JaCoCo'
+  #     summaryFileLocation: '$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml'
+  #     reportDirectory: '$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/'
+
+  # - task: SonarCloudPrepare@1
+  #   inputs:
+  #     SonarCloud: 'SonarCloud'
+  #     organization: 'alushiro'
+  #     projectKey: 'alushiro_microservicio-spring-v4'
+  #     projectName: 'microservicio-spring-v4'
+  #     extraProperties: |
+  #       sonar.pullrequest.provider=none
+  #       sonar.scm.disabled=true
+  #       sonar.coverage.jacoco.xmlReportPaths=$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml
+  #       sonar.coverage.jacoco.minimumProjectThreshol="$(min_coverage)"  
+
+  #    displayName: 'SonarCloud Prepare'
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $htmlReportPath = "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/index.html"
+          Write-Host "HTML report path: $htmlReportPath"  # Add this line to log the path
+          $coverageDataXml = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/jacocoTestReport.xml" -Raw
+          Write-Host "XML report : $coverageDataXml"
+          $coverageData = Get-Content -Path "$(System.DefaultWorkingDirectory)/build/jacocoHtml/test/html/index.html" -Raw
+          # Realiza el análisis del archivo HTML para obtener los datos de cobertura necesarios
+          # Puedes utilizar expresiones regulares o técnicas de manipulación de cadenas para extraer los datos específicos que necesitas
+          $pattern = 'class="ctr2">(\d+)%<\/td>'
+          $coverageLine = $coverageData | Select-String -Pattern $pattern | ForEach-Object { $_.Matches.Groups[1].Value }
+          $coverage = [int]$coverageLine
+          $minCoverageThreshold = "$(min_coverage)"
+          Write-Host "Code coverage minimum $minCoverageThreshold% actual ($coverage%). ."#Comentar luego
+          if ($coverage -lt $minCoverageThreshold) {
+            Write-Host "Code coverage is below $minCoverageThreshold% ($coverage%). Failing the pipeline."
+            exit 1
+          } else {
+            Write-Host "Code coverage is above $minCoverageThreshold% ($coverage%)."
+          }
+      displayName: 'Check code coverage JaCoCoReport'
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Docker'
+        command: 'login'
+      displayName: Docker Login
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Docker'
+        repository: 'alushiro/microservicio-spring-v4'
+        command: 'buildAndPush'
+        tags: |
+              $(Build.BuildId)
+              latest
+        Dockerfile: '**/Dockerfile'
+      displayName: Docker (Build & Push)
+#    - script: |
+#        docker network create red-devops   
+#        docker run --rm -dp 8080:8080 --name devops-microservicio-v4 --network red-devops alushiro/microservicio-spring-v4:latest
+#      displayName: 'Deploy Service (microservicio)'
+    #- task: CmdLine@2
+    #  inputs:
+    #    script: |
+    #     sleep 5 ; jmeter -n -t $(System.DefaultWorkingDirectory)/jmeter/test-plan.jmx -l $(System.DefaultWorkingDirectory)/resultados.jtl
+    #  displayName: 'Run JMeter'
+
+#    - script: |   
+#        docker run --rm --name devops-jmeter --network red-devops alushiro/jmeter_docker:latest
+#      displayName: 'Deploy & Run Jmeter'
+
+#    - script: |
+#        echo 'Llamando a servicio desde localhost:8080/greeting'
+#        echo '----------------------------------------------'
+#        respuesta=$(wget -qO- localhost:8080/greeting)
+#        echo "$respuesta"
+#        echo '----------------------------------------------'
+#        echo 'Deteniendo Dockerized Service'
+#        docker stop devops-microservicio-v4
+#      displayName: 'End Course'
+- job: Job2
+  dependsOn: Job1
+  displayName: 'Job Local'
+  pool:
+    #vmImage: ubuntu-latest
+    name: EduPc
+  steps:
+  - task: Kubernetes@1
+    inputs:
+      connectionType: 'None'
+      command: 'apply'
+      arguments: '--force -f deployment-app.yaml'
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        Start-Process "kubectl" -ArgumentList "port-forward service/lab-service 8080:8080" -WindowStyle Hidden
+    displayName: 'kubectl port-forward'
+    continueOnError: true
+
+  - task: CmdLine@2
+    inputs:
+        script: |
+            jmeter -n -t jmeter/test-plan.jmx -l resultados.jtl
+    displayName: 'Run JMeter'
+  
+#  - task: PowerShell@2
+#    inputs:
+#      targetType: 'inline'
+#      script: |
+#        $process = Get-Process -Name "kubectl" -ErrorAction SilentlyContinue
+#        if ($process) {
+#          Stop-Process -Id $process.Id -Force
+#        }
+#    displayName: 'Stop kubectl port-forward'
