@@ -188,12 +188,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        $portForwardCommand = "kubectl port-forward service/lab-deployment 8080:8080"
-        $output = Invoke-Expression -Command $portForwardCommand 2>&1
-        if ($LASTEXITCODE -ne 0) {
-          Write-Host "Failed to execute kubectl port-forward command."
-          Write-Host "Error: $output"
-        }
+        kubectl port-forward service/lab-service 8080:8080
     displayName: 'kubectl port-forward'
     continueOnError: true
 
