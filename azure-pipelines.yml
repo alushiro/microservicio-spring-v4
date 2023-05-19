@@ -41,6 +41,7 @@ jobs:
           sonar.coverage.jacoco.minimumProjectThreshol="$(min_coverage)"  
           sonar.qualitygate.wait=true
           sonar.qualitygate.conditions=blocker
+          sonar.issue.squid:MaximumInheritanceDepth.severity=BLOCKER
       displayName: Preparar Sonar Cloud
 
     - task: Gradle@3
