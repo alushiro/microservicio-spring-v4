@@ -139,39 +139,39 @@ jobs:
         containerRegistry: 'Docker'
         command: 'login'
       displayName: Docker Login
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker'
-        repository: 'alushiro/microservicio-spring-v4'
-        command: 'buildAndPush'
-        tags: |
-              $(Build.BuildId)
-              latest
-        Dockerfile: '**/Dockerfile'
-      displayName: Docker (Build & Push)
-    - script: |
-        docker network create red-devops   
-        docker run --rm -dp 8080:8080 --name devops-microservicio-v4 --network red-devops alushiro/microservicio-spring-v4:latest
-      displayName: 'Deploy Service (microservicio)'
+#    - task: Docker@2
+#      inputs:
+#        containerRegistry: 'Docker'
+#        repository: 'alushiro/microservicio-spring-v4'
+#        command: 'buildAndPush'
+#        tags: |
+#              $(Build.BuildId)
+#              latest
+#        Dockerfile: '**/Dockerfile'
+#      displayName: Docker (Build & Push)
+#    - script: |
+#        docker network create red-devops   
+#        docker run --rm -dp 8080:8080 --name devops-microservicio-v4 --network red-devops alushiro/microservicio-spring-v4:latest
+#      displayName: 'Deploy Service (microservicio)'
     #- task: CmdLine@2
     #  inputs:
     #    script: |
     #     sleep 5 ; jmeter -n -t $(System.DefaultWorkingDirectory)/jmeter/test-plan.jmx -l $(System.DefaultWorkingDirectory)/resultados.jtl
     #  displayName: 'Run JMeter'
 
-    - script: |   
-        docker run --rm --name devops-jmeter --network red-devops alushiro/jmeter_docker:latest
-      displayName: 'Deploy & Run Jmeter'
+#    - script: |   
+#        docker run --rm --name devops-jmeter --network red-devops alushiro/jmeter_docker:latest
+#      displayName: 'Deploy & Run Jmeter'
 
-    - script: |
-        echo 'Llamando a servicio desde localhost:8080/greeting'
-        echo '----------------------------------------------'
-        respuesta=$(wget -qO- localhost:8080/greeting)
-        echo "$respuesta"
-        echo '----------------------------------------------'
-        echo 'Deteniendo Dockerized Service'
-        docker stop devops-microservicio-v4
-      displayName: 'End Course'
+#    - script: |
+#        echo 'Llamando a servicio desde localhost:8080/greeting'
+#        echo '----------------------------------------------'
+#        respuesta=$(wget -qO- localhost:8080/greeting)
+#        echo "$respuesta"
+#        echo '----------------------------------------------'
+#        echo 'Deteniendo Dockerized Service'
+#        docker stop devops-microservicio-v4
+#      displayName: 'End Course'
 - job: Job2
   dependsOn: Job1
   displayName: 'Job Local'
@@ -184,3 +184,10 @@ jobs:
       connectionType: 'None'
       command: 'apply'
       arguments: '-f deployment-app.yaml'
+    
+  - task: CmdLine@2
+    inputs:
+        script: |
+            Start-Sleep -Seconds 5
+            jmeter -n -t jmeter/test-plan.jmx -l resultados.jtl
+    displayName: 'Run JMeter'
