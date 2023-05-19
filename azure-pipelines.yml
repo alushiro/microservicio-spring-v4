@@ -139,16 +139,16 @@ jobs:
         containerRegistry: 'Docker'
         command: 'login'
       displayName: Docker Login
-#    - task: Docker@2
-#      inputs:
-#        containerRegistry: 'Docker'
-#        repository: 'alushiro/microservicio-spring-v4'
-#        command: 'buildAndPush'
-#        tags: |
-#              $(Build.BuildId)
-#              latest
-#        Dockerfile: '**/Dockerfile'
-#      displayName: Docker (Build & Push)
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Docker'
+        repository: 'alushiro/microservicio-spring-v4'
+        command: 'buildAndPush'
+        tags: |
+              $(Build.BuildId)
+              latest
+        Dockerfile: '**/Dockerfile'
+      displayName: Docker (Build & Push)
 #    - script: |
 #        docker network create red-devops   
 #        docker run --rm -dp 8080:8080 --name devops-microservicio-v4 --network red-devops alushiro/microservicio-spring-v4:latest
