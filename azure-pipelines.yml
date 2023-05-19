@@ -184,10 +184,21 @@ jobs:
       connectionType: 'None'
       command: 'apply'
       arguments: '--force -f deployment-app.yaml'
-    
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        $portForwardCommand = "kubectl port-forward service/lab-deployment 8080:8080"
+        $output = Invoke-Expression -Command $portForwardCommand 2>&1
+        if ($LASTEXITCODE -ne 0) {
+          Write-Host "Failed to execute kubectl port-forward command."
+          Write-Host "Error: $output"
+        }
+    displayName: 'kubectl port-forward'
+    continueOnError: true
+
   - task: CmdLine@2
     inputs:
         script: |
-            Start-Sleep -Seconds 5
             jmeter -n -t jmeter/test-plan.jmx -l resultados.jtl
     displayName: 'Run JMeter'
