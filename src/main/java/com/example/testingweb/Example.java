@@ -1,4 +1,5 @@
 package com.example.testingweb;
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 public class Example{
 
@@ -15,6 +16,7 @@ public class Example{
         this.name = name;
     }
 
+    @SuppressWarnings("squid:S2259")
     public String getName() {
         return name;
     }
@@ -27,6 +29,7 @@ public class Example{
         // ... método no utilizado
     }
 
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "DM_COMPLEXITY", justification = "Complex logic is necessary in this case")
     public void longMethodWithComplexLogic() {
         // ... un método largo y complejo con múltiples condiciones y bucles
     }
